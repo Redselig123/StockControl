@@ -43,16 +43,6 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
-    fun firebaseAuthWithGoogle(idToken: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                onSuccess()
-            } else {
-                onError(task.exception?.message ?: "Error al iniciar sesión con Google")
-            }
-        }
-    }
     fun signInWithGoogleCredential(credential: AuthCredential, home:() -> Unit){
      viewModelScope.launch {
          try {
@@ -62,7 +52,6 @@ class AuthViewModel : ViewModel() {
                  }
              }
                  .addOnCompleteListener {
-
                  }
          } catch (e: Exception) {
              Log.e("google", "Error google view model $e")
