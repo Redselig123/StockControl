@@ -25,11 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
+data class Item(val id: String, val description: String, val price: Double, val stock: Int)
 @Composable
 fun HomeScreen(items: List<Item>, onAddClick: () -> Unit, onItemClick: (Item) -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
-
+    //traer de la data base la lista al cargar la pantalla por dbViewModel. trae una lista de tipo Item
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -98,4 +98,3 @@ fun PreviewSearchScreen() {
         onAddClick = {}, onItemClick = {}
     )
 }
-data class Item(val id: String, val description: String, val price: Double, val stock: Int)
