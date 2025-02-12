@@ -1,7 +1,9 @@
 package com.example.stockcontrol.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,99 +34,145 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.stockcontrol.model.Items
+import com.example.stockcontrol.viewModel.ProductViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailScreen(
-    product: Item,
-    onUpdateClick: (Item) -> Unit,
-    onDeleteClick: (String) -> Unit,
-    navController: NavController
+    product: Items, // Solo pasamos el id
+    onUpdateClick: (Items) -> Unit,
+    navController: NavController,
+    productViewModel: ProductViewModel
 ) {
+
+    // Obtener los detalles del producto usando el id
 
     var stock by rememberSaveable { mutableStateOf(product.stock.toString()) }
     var price by rememberSaveable { mutableStateOf(product.price.toString()) }
     val context = LocalContext.current
-
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(MaterialTheme.colorScheme.background) // Usar el fondo del tema
     ) {
-
-        Text(
-            text = "Detalle del Producto",
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
-        )
-
-        OutlinedTextField(
-            value = product.id,
-            onValueChange = {},
-            label = { Text("ID") },
-            readOnly = true,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-
-        OutlinedTextField(
-            value = product.description,
-            onValueChange = {},
-            label = { Text("Descripción") },
-            readOnly = true,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-
-        OutlinedTextField(
-            value = stock,
-            onValueChange = { stock = it },
-            label = { Text("Stock") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-
-        OutlinedTextField(
-            value = price,
-            onValueChange = { price = it },
-            label = { Text("Precio") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(onClick = {///if not empty
-                onUpdateClick(product.copy(stock = stock.toIntOrNull() ?: product.stock, price = price.toDoubleOrNull() ?: product.price))
-                Toast.makeText(context, "Producto actualizado", Toast.LENGTH_SHORT).show()
-                navController.navigate("home")
-            }) {
-                Text("Actualizar")
-            }
 
-            Button(
-                onClick = {
-                    onDeleteClick(product.id)
-                    Toast.makeText(context, "Producto Eliminado", Toast.LENGTH_SHORT).show()
+            Text(
+                text = "Detalle del Producto",
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
-                    navController.navigate("home")
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+            OutlinedTextField(
+                value = product.id,
+                onValueChange = {},
+                label = { Text("ID") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
+                unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
+                focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
+                focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+            )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = product?.description ?: "",
+                onValueChange = {},
+                label = { Text("Descripción") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
+                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+            )
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+
+            OutlinedTextField(
+                value = price,
+                onValueChange = { price = it },
+                label = { Text("Precio") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
+                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = stock,
+                onValueChange = { stock = it },
+                label = { Text("Stock") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth(),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
+                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                )
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text("Eliminar")
+                Button(onClick = {
+                    if (product != null && price != null && stock != null) {
+                        product.price = price.toDouble()
+                        product.stock = stock.toInt()
+                        if(product.price > 0 && product.stock >= 0){
+                            productViewModel.insertProduct(product, onSuccess = {}, onError = {})
+                            Toast.makeText(context, "Producto actualizado", Toast.LENGTH_SHORT).show()
+                            navController.navigate("home")
+                        }
+                        else{
+                            Toast.makeText(context, "Campos incorrectos de precio y/o stock", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }) {
+                    Text("Actualizar",color = MaterialTheme.colorScheme.onPrimary)
+                }
+
+                Button(
+                    onClick = {
+                        productViewModel.deleteProduct(product.id, context)
+                        navController.navigate("home")
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                ) {
+                    Text("Eliminar",color = MaterialTheme.colorScheme.onPrimary)
+                }
             }
         }
     }

@@ -4,7 +4,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,10 +17,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +45,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -88,102 +94,118 @@ fun LoginScreen(
         googleSignInClient.signOut()
         launcher.launch(googleSignInClient.signInIntent)
     }
-
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .background(MaterialTheme.colorScheme.background) // Usar el fondo del tema
     ) {
-        Text(
-            text = "STOCK CONTROL",
-            fontSize = 20.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 30.dp)
-        )
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("EMAIL") },
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color(0xFFF2EFEF),
-                unfocusedContainerColor = Color(0xFFF2EFEF)
-            )
-        )
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("CONTRASEÑA") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color(0xFFF2EFEF),
-                unfocusedContainerColor = Color(0xFFF2EFEF)
-            )
-        )
-        Button(
-            onClick = {
-                googleLogIn()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White
-            )
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.google_icon),
-                contentDescription = "Google",
-                modifier = Modifier.size(24.dp),
-                tint = Color.Unspecified
+            Text(
+                text = "STOCK CONTROL",
+                fontSize = 35.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 30.dp),
+                color = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "GOOGLE", color = Color.Black)
-        }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("EMAIL") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
+                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface // Color del texto cuando no está enfocado
+                )
+            )
+
+
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("CONTRASEÑA") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
+                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface // Color del texto cuando no está enfocado
+                )
+            )
             Button(
                 onClick = {
-                    if (email.isNotEmpty() && password.isNotEmpty()) {
-                        handleLogin()
-                    } else {
-                        message = "Email y contraseña no válidos"
-                    }
+                    googleLogIn()
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                )
             ) {
-                Text(text = "ACCEDER", fontSize = 20.sp, color = Color.Black)
+                Icon(
+                    painter = painterResource(id = R.drawable.google_icon),
+                    contentDescription = "Google",
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.Unspecified
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "GOOGLE", color = Color.Black)
             }
 
-            Button(
-                onClick = {
-                    if (email.isNotEmpty() && password.isNotEmpty()) {
-                        handleSignUp()
-                    } else {
-                        message = "Email y contraseña no válidos"
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text(text = "REGISTRARME", fontSize = 20.sp, color = Color.Black)
+                Button(
+                    onClick = {
+                        if (email.isNotEmpty() && password.isNotEmpty()) {
+                            handleLogin()
+                        } else {
+                            message = "Email y contraseña no válidos"
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+                ) {
+                    Text(text = "ACCEDER", fontSize = 20.sp, color = Color.Black)
+                }
+
+                Button(
+                    onClick = {
+                        if (email.isNotEmpty() && password.isNotEmpty()) {
+                            handleSignUp()
+                        } else {
+                            message = "Email y contraseña no válidos"
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+                ) {
+                    Text(text = "REGISTRARME", fontSize = 20.sp, color = Color.Black)
+                }
             }
-        }
-        message?.let {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-            message = null
+            message?.let {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                message = null
+            }
         }
     }
 }

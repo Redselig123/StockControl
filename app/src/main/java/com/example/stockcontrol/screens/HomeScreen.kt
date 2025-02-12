@@ -1,6 +1,8 @@
 package com.example.stockcontrol.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,10 +14,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -24,12 +31,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.stockcontrol.model.Items
+import com.example.stockcontrol.viewModel.ProductViewModel
+import com.google.firebase.firestore.FirebaseFirestore
 
-data class Item(val id: String, val description: String, val price: Double, val stock: Int)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(items: List<Item>, onAddClick: () -> Unit, onItemClick: (Item) -> Unit) {
+fun HomeScreen(
+    onAddClick: () -> Unit,
+    onItemClick: (String) -> Unit,
+    productViewModel: ProductViewModel
+) {
+
     var searchQuery by remember { mutableStateOf("") }
-    //traer de la data base la lista al cargar la pantalla por dbViewModel. trae una lista de tipo Item
+    val products by productViewModel.products.observeAsState(emptyList())
+
+    LaunchedEffect(Unit) {
+        productViewModel.fetchProducts()
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background) // Usar el fondo del tema
+    ) {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -39,62 +66,72 @@ fun HomeScreen(items: List<Item>, onAddClick: () -> Unit, onItemClick: (Item) ->
                 value = searchQuery,
                 onValueChange = { searchQuery = it },//to room and firebase
                 label = { Text("Buscar") },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
+                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                )
             )
             Spacer(modifier = Modifier.width(8.dp))
             Button(onClick = onAddClick) {
-                Text("AGREGAR")
+                Text("AGREGAR", color = MaterialTheme.colorScheme.onPrimary)
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            Text("ID", modifier = Modifier.weight(1f), fontSize = 10.sp)
-            Text("DESCRIPCIÓN", modifier = Modifier.weight(1f), fontSize = 10.sp)
-            Text("PRECIO", modifier = Modifier.weight(1f), fontSize = 10.sp)
-            Text("STOCK", modifier = Modifier.weight(1f), fontSize = 10.sp)
+            Text(
+                "ID",
+                modifier = Modifier.weight(1f),
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                "DESCRIPCIÓN",
+                modifier = Modifier.weight(1f),
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                "PRECIO",
+                modifier = Modifier.weight(1f),
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                "STOCK",
+                modifier = Modifier.weight(1f),
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         }
 
         LazyColumn {
-            items(items) { item ->
-                ItemRow(item, onItemClick)
+            items(products) { item ->
+                ItemRow(item, onItemClick = { selectedItem ->
+                    onItemClick(selectedItem.id)
+                })
             }
         }
     }
-}
-
-@Composable
-fun ItemRow(item: Item, onItemClick: (Item) -> Unit) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp)
-        .clickable { onItemClick(item) }//to room and firebase and product_screen
-    ) {
-        Text(item.id, modifier = Modifier.weight(1f), fontSize = 10.sp)
-        Text(item.description, modifier = Modifier.weight(1f), fontSize = 10.sp)
-        Text(item.price.toString(), modifier = Modifier.weight(1f), fontSize = 10.sp)
-        Text(item.stock.toString(), modifier = Modifier.weight(1f), fontSize = 10.sp)
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun PreviewSearchScreen() {
-    HomeScreen(
-        items = listOf(
-            Item("1", "Producto A", 10.99, 5),
-            Item("2", "Producto B", 20.50, 3),
-            Item("3", "Producto B", 20.50, 3),
-            Item("4", "Producto B", 20.50, 3),
-            Item("5", "Producto B", 20.50, 3),
-            Item("6", "Producto B", 20.50, 3),
-            Item("7", "Producto B", 20.50, 3),
-            Item("8", "Producto B", 20.50, 3),
-            Item("9", "Producto B", 20.50, 3),
-            Item("10", "Producto B", 20.50, 3),
-            Item("11", "Producto B", 20.50, 3),
-        ),
-        onAddClick = {}, onItemClick = {}
-    )
+fun ItemRow(item: Items, onItemClick: (Items) -> Unit) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)
+        .clickable { onItemClick(item) }
+    ) {
+        Text(item.id, modifier = Modifier.weight(1f), fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurface)
+        Text(item.description, modifier = Modifier.weight(1f), fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurface)
+        Text(item.price.toString(), modifier = Modifier.weight(1f), fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurface)
+        Text(item.stock.toString(), modifier = Modifier.weight(1f), fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurface)
+    }
 }
