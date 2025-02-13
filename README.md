@@ -1,4 +1,4 @@
-# STOCKCONTROL
+# STOCK CONTROL
 
 Este proyecto es una app para el control de stock de cualquier producto que usted desee. Solo necesita agregarle un ID, una Descripción, un precio y un stock.
 ## Pre-requisitos 📋
