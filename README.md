@@ -1,6 +1,6 @@
 # STOCK CONTROL
 
-Este proyecto es una app para el control de stock de cualquier producto que usted desee. Solo necesita agregarle un ID, una Descripción, un precio y un stock.
+Este proyecto es una app para el control de stock de cualquier producto que usted desee. Solo necesita agregarle un ID, una Descripción, un precio y un stock. Usa una base de datos en la nube por lo que necesitará internet para ver los cambios reflejados.
 ## Pre-requisitos 📋
 
 - Lenguaje: Kotlin
