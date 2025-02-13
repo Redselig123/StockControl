@@ -97,7 +97,7 @@ fun LoginScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background) // Usar el fondo del tema
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -122,12 +122,12 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
-                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
-                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface // Color del texto cuando no está enfocado
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                 )
             )
 
@@ -141,12 +141,12 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
-                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
-                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface // Color del texto cuando no está enfocado
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                 )
             )
             Button(

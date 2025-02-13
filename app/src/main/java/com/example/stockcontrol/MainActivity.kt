@@ -65,11 +65,11 @@ class MainActivity : ComponentActivity() {
                                     productViewModel = productViewModel
                                 )
                             } else {
-                                // Manejar el caso donde el producto no se encuentra
+
                                 Text("Producto no encontrado")
                             }
                         } else {
-                            // Manejar el caso donde el productId es nulo
+
                             Text("ID de producto inválido")
                         }
                     }

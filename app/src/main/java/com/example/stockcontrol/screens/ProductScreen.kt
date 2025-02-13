@@ -40,13 +40,12 @@ import com.example.stockcontrol.viewModel.ProductViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailScreen(
-    product: Items, // Solo pasamos el id
+    product: Items,
     onUpdateClick: (Items) -> Unit,
     navController: NavController,
     productViewModel: ProductViewModel
 ) {
 
-    // Obtener los detalles del producto usando el id
 
     var stock by rememberSaveable { mutableStateOf(product.stock.toString()) }
     var price by rememberSaveable { mutableStateOf(product.price.toString()) }
@@ -54,7 +53,7 @@ fun ProductDetailScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background) // Usar el fondo del tema
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -78,13 +77,13 @@ fun ProductDetailScreen(
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
-                unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
-                focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
-                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
-                focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
-                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
-            )
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                )
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -95,13 +94,13 @@ fun ProductDetailScreen(
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
-                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onSurface
-            )
+                )
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -114,11 +113,11 @@ fun ProductDetailScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
-                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                 )
             )
@@ -132,11 +131,11 @@ fun ProductDetailScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
-                    focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
-                    focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
                     unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                 )
             )
@@ -147,21 +146,33 @@ fun ProductDetailScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(onClick = {
-                    if (product != null && price != null && stock != null) {
-                        product.price = price.toDouble()
-                        product.stock = stock.toInt()
-                        if(product.price > 0 && product.stock >= 0){
-                            productViewModel.insertProduct(product, onSuccess = {}, onError = {})
-                            Toast.makeText(context, "Producto actualizado", Toast.LENGTH_SHORT).show()
-                            navController.navigate("home")
-                        }
-                        else{
-                            Toast.makeText(context, "Campos incorrectos de precio y/o stock", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                    val stockInt = stock.toIntOrNull()
 
+                    if (product != null && price != null && stockInt != null) {
+                        product.price = price.toDouble()
+                        product.stock = stockInt
+
+                        if (product.price > 0 && product.stock >= 0) {
+                            productViewModel.insertProduct(
+                                product,
+                                onSuccess = {},
+                                onError = {})
+                            Toast.makeText(context, "Producto actualizado", Toast.LENGTH_SHORT)
+                                .show()
+                            navController.navigate("home")
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Campos incorrectos de precio y/o stock",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }else{
+                        Toast.makeText(context, "Precio debe ser mayor a 0 y stock un entero", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }) {
-                    Text("Actualizar",color = MaterialTheme.colorScheme.onPrimary)
+                    Text("Actualizar", color = MaterialTheme.colorScheme.onPrimary)
                 }
 
                 Button(
@@ -171,7 +182,7 @@ fun ProductDetailScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                 ) {
-                    Text("Eliminar",color = MaterialTheme.colorScheme.onPrimary)
+                    Text("Eliminar", color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         }

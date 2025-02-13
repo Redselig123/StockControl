@@ -33,7 +33,7 @@ class ProductViewModel : ViewModel() {
                         .addOnSuccessListener { result ->
                             val productList = mutableListOf<Items>()
                             for (document in result) {
-                                val product = document.toObject(Items::class.java)  // 🔹 Conversión directa
+                                val product = document.toObject(Items::class.java)
                                 productList.add(product)
                             }
                             mutProduct.postValue(productList)

@@ -45,7 +45,7 @@ fun AddProduct(navController: NavController, productViewModel: ProductViewModel)
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background) // Usar el fondo del tema
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -97,7 +97,7 @@ fun AddProduct(navController: NavController, productViewModel: ProductViewModel)
                             } else {
                                 Toast.makeText(
                                     context,
-                                    "Precio y Stock deben ser mayores a 0",
+                                    "Precio debe ser mayor a 0 y Stock debe ser entro mayor a 0",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -134,7 +134,7 @@ fun InputRow(
             label,
             modifier = Modifier.width(120.dp),
             color = MaterialTheme.colorScheme.onSurface
-        ) // Ancho fijo para alinear etiquetas
+        )
         Spacer(modifier = Modifier.width(8.dp))
         OutlinedTextField(
             value = value,
@@ -142,11 +142,11 @@ fun InputRow(
             label = {  },
             modifier = Modifier.weight(1f).then(modifier),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary, // Color del borde cuando está enfocado
-                unfocusedBorderColor = MaterialTheme.colorScheme.secondary, // Color del borde cuando no está enfocado
-                focusedLabelColor = MaterialTheme.colorScheme.primary, // Color de la etiqueta cuando está enfocado
-                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface, // Color de la etiqueta cuando no está enfocado
-                focusedTextColor = MaterialTheme.colorScheme.onBackground, // Color del texto cuando está enfocado
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
                 unfocusedTextColor = MaterialTheme.colorScheme.onSurface
             )
         )

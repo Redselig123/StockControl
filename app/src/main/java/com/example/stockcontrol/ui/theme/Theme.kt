@@ -12,34 +12,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-// Tema claro (fondo blanco y texto negro)
+
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF6200EE),
     secondary = Color(0xFF03DAC6),
-    background = Color.White, // Fondo blanco
-    surface = Color.White, // Superficie blanca
-    onPrimary = Color.White, // Texto blanco sobre colores primarios
-    onSecondary = Color.Black, // Texto negro sobre colores secundarios
-    onBackground = Color.Black, // Texto negro sobre fondo blanco
-    onSurface = Color.Black // Texto negro sobre superficie blanca
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onBackground = Color.Black,
+    onSurface = Color.Black
 )
 
-// Tema oscuro (fondo negro y texto blanco)
+
 private val DarkColorScheme = darkColorScheme(
     primary = Color(0xFFBB86FC),
     secondary = Color(0xFF03DAC6),
-    background = Color.Black, // Fondo negro
-    surface = Color.Black, // Superficie negra
-    onPrimary = Color.Black, // Texto negro sobre colores primarios
-    onSecondary = Color.Black, // Texto negro sobre colores secundarios
-    onBackground = Color.White, // Texto blanco sobre fondo negro
-    onSurface = Color.White // Texto blanco sobre superficie negra
+    background = Color.Black,
+    surface = Color.Black,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    onBackground = Color.White,
+    onSurface = Color.White
 )
 
 @Composable
 fun StockControlTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
