@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -42,6 +44,7 @@ android {
 }
 
 dependencies {
+    val room_version = "2.6.1"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -71,4 +74,9 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("com.google.firebase:firebase-firestore")
+
+    implementation("androidx.room:room-runtime:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation ("androidx.room:room-ktx:2.5.1")
+
 }

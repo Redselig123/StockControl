@@ -71,11 +71,12 @@ fun ProductDetailScreen(
             )
 
             OutlinedTextField(
-                value = product.id,
+                value = product.id.toString(),
                 onValueChange = {},
                 label = { Text("ID") },
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = MaterialTheme.colorScheme.secondary,
@@ -153,12 +154,10 @@ fun ProductDetailScreen(
                         product.stock = stockInt
 
                         if (product.price > 0 && product.stock >= 0) {
-                            productViewModel.insertProduct(
-                                product,
-                                onSuccess = {},
-                                onError = {})
-                            Toast.makeText(context, "Producto actualizado", Toast.LENGTH_SHORT)
-                                .show()
+                            productViewModel.updateProduct(
+                                product.copy(price = price.toDouble(), stock = stockInt)
+                               )
+                            Toast.makeText(context, "Producto actualizado", Toast.LENGTH_SHORT).show()
                             navController.navigate("home")
                         } else {
                             Toast.makeText(
@@ -177,7 +176,7 @@ fun ProductDetailScreen(
 
                 Button(
                     onClick = {
-                        productViewModel.deleteProduct(product.id, context)
+                        productViewModel.deleteProduct(product)
                         navController.navigate("home")
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)

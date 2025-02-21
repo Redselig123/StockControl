@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.stockcontrol.model.Items
@@ -37,11 +36,13 @@ import com.example.stockcontrol.viewModel.ProductViewModel
 
 @Composable
 fun AddProduct(navController: NavController, productViewModel: ProductViewModel) {
+
     var id by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var stock by remember { mutableStateOf("") }
     val context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -81,16 +82,16 @@ fun AddProduct(navController: NavController, productViewModel: ProductViewModel)
 
                     InputRow(label = "STOCK:", value = stock, onValueChange = { stock = it })
                     Button(onClick = {
-                        if (id.isNotBlank() && price.isNotBlank() && description.isNotBlank() && stock.isNotBlank()) {
+                        val idValue = id.toIntOrNull()
+                        if (idValue != null && price.isNotBlank() && description.isNotBlank() && stock.isNotBlank()) {
                             val priceValue = price.toDoubleOrNull()
                             val stockValue = stock.toIntOrNull()
                             if (priceValue != null && stockValue != null && priceValue > 0 && stockValue >= 0) {
                                 val product =
-                                    Items(id, description, price.toDouble(), stock.toInt())
+                                    Items(idValue, description, price.toDouble(), stock.toInt())
                                 productViewModel.insertProduct(
                                     product,
-                                    onSuccess = {},
-                                    onError = {})
+                                   )
                                 Toast.makeText(context, "Producto Agregado", Toast.LENGTH_SHORT)
                                     .show()
                                 navController.navigate("home")
